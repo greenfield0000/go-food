@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/login-page.dart';
 
-import 'pages/category-page.dart';
+import 'pages/main-page.dart';
 
 void main() {
   runApp(MyApp());

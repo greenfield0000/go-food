@@ -1,8 +1,12 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:mobile/models/list/category/category-item.dart';
+
+import 'dish-list-page.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key key, String tittle}) : super(key: key);
@@ -26,14 +30,22 @@ class _MainPageState extends State<MainPage> {
             mainAxisSpacing: 10,
             crossAxisCount: 2,
             children: <Widget>[
-              _buildCategoryItem(context, "Салаты"),
-              _buildCategoryItem(context, "Первые блюда"),
-              _buildCategoryItem(context, "Вторые блюда"),
-              _buildCategoryItem(context, "Гарниры"),
-              _buildCategoryItem(context, "Хлеб"),
-              _buildCategoryItem(context, "Выпечка"),
-              _buildCategoryItem(context, "Кондитерские изделия"),
-              _buildCategoryItem(context, "Торты")
+              _buildCategoryItem(
+                  context, CategoryItem("Салаты", "системное имя 1")),
+              _buildCategoryItem(
+                  context, CategoryItem("Первые блюда", "системное имя 2")),
+              _buildCategoryItem(
+                  context, CategoryItem("Вторые блюда", "системное имя 3")),
+              _buildCategoryItem(
+                  context, CategoryItem("Гарниры", "системное имя 4")),
+              _buildCategoryItem(
+                  context, CategoryItem("Хлеб", "системное имя 5")),
+              _buildCategoryItem(
+                  context, CategoryItem("Выпечка", "системное имя 6")),
+              _buildCategoryItem(context,
+                  CategoryItem("Кондитерские изделия", "системное имя 7")),
+              _buildCategoryItem(
+                  context, CategoryItem("Торты", "системное имя 8"))
             ],
           ),
         ),
@@ -44,19 +56,17 @@ class _MainPageState extends State<MainPage> {
   /*
    * Создание категории меню
    */
-  Builder _buildCategoryItem(BuildContext context, String text) {
+  Builder _buildCategoryItem(BuildContext context, CategoryItem categoryItem) {
+    String image = '${categoryItem.imageLink.toString()}${Random.secure().nextInt(100).toString()}';
     return Builder(
       builder: (context) => Container(
         child: InkWell(
           onTap: () {
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text(
-                "Выбрана категория '" + text + '\'',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-              ),
-              duration: Duration(seconds: 2),
-            ));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        DishListPage(categoryItem.name, categoryItem.sysName)));
           },
           child: Container(
             padding: const EdgeInsets.all(8),
@@ -72,11 +82,28 @@ class _MainPageState extends State<MainPage> {
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
             ),
-            child: Text(
-              text.toString(),
-              textAlign: TextAlign.center,
+            child: Container(
+              height: double.infinity,
+              width: double.infinity,
+              child: Column(
+                children: [
+                  Text(
+                    categoryItem.name,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Image.network(
+                    image,
+                    fit: BoxFit.contain,
+                  )
+                ],
+              ),
             ),
-//            color: Colors.green[100],
           ),
         ),
       ),

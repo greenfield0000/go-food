@@ -22,12 +22,13 @@ class LoginPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    'SIGN IN',
+                    'Delivery Food',
                     style: TextStyle(fontSize: 30.0),
                   ),
                   const SizedBox(height: 30),
                   TextField(
                     decoration: InputDecoration(
+                      hintText: 'Email',
                       fillColor: Colors.pink,
                       border: new OutlineInputBorder(
                         borderRadius: const BorderRadius.all(
@@ -45,6 +46,7 @@ class LoginPage extends StatelessWidget {
                   TextField(
                     obscureText: true,
                     decoration: InputDecoration(
+                      hintText: 'Пароль',
                       fillColor: Colors.pink,
                       border: OutlineInputBorder(
                         borderRadius: const BorderRadius.all(
@@ -64,7 +66,7 @@ class LoginPage extends StatelessWidget {
                       Navigator.pushNamed(context, '/main');
                     },
                     child: Text(
-                      'Login'.toUpperCase(),
+                      'Войти'.toUpperCase(),
                       style: TextStyle(color: Colors.white),
                     ),
                     color: Colors.pink,
