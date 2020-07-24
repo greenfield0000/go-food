@@ -3,15 +3,11 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/greenfield0000/go-food/back/model"
 	"io/ioutil"
 	"log"
 	"net/http"
 )
-
-type LoginModel struct {
-	UserName string `json:"username"`
-	Password string `json:"password"`
-}
 
 // started server function
 func rootHandler(w http.ResponseWriter, r *http.Request) {
