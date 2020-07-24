@@ -21,7 +21,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var loginModel LoginModel
+	var loginModel model.LoginModel
 	err = json.Unmarshal(body, &loginModel)
 	if err != nil {
 		log.Println("Error unmarshal login model")
