@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/greenfield0000/go-food/back/model"
+	model "github.com/greenfield0000/go-food/back/model"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -40,9 +40,18 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", rootHandler)
-	http.HandleFunc("/registry", registryHandler)
-	http.HandleFunc("/login", loginHandler)
-	http.HandleFunc("/logout", logoutHandler)
+	http.HandleFunc("/", midleware(rootHandler))
+	http.HandleFunc("/registry", midleware(registryHandler))
+	http.HandleFunc("/login", midleware(loginHandler))
+	http.HandleFunc("/logout", midleware(logoutHandler))
 	log.Fatalln(http.ListenAndServe(":8080", nil))
+}
+
+func midleware(next http.HandlerFunc) http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Println("Run midleware start")
+		next.ServeHTTP(w, r)
+		log.Println("Run midleware finish")
+
+	})
 }
