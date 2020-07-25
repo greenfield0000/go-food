@@ -3,11 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/greenfield0000/go-food/back/database"
-	"github.com/greenfield0000/go-food/back/model"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/greenfield0000/go-food/back/database"
+	"github.com/greenfield0000/go-food/back/model"
 )
 
 // started server function
