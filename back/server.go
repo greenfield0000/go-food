@@ -44,7 +44,7 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 var dbService *database.DataBaseSevice
 
 func main() {
-	dbService := database.Init()
+	database.Init()
 
 	http.HandleFunc("/", midleware(rootHandler))
 	http.HandleFunc("/registry", midleware(registryHandler))

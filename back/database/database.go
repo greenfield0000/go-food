@@ -25,7 +25,7 @@ const (
 )
 
 // Создание сервиса для работы с базой
-func (db *DataBaseSevice) Init() *DataBaseSevice {
+func Init() *DataBaseSevice {
 	log.Println("Start init db service")
 
 	dbService := &DataBaseSevice{
@@ -35,7 +35,7 @@ func (db *DataBaseSevice) Init() *DataBaseSevice {
 		dbPassword,
 	}
 
-	conn, err := db.openConnect()
+	conn, err := dbService.openConnect()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
