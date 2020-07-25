@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/greenfield0000/go-food/back/database"
 	"github.com/greenfield0000/go-food/back/model"
 	"io/ioutil"
 	"log"
@@ -39,7 +40,12 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("logout action"))
 }
 
+// Сервис для работы с бд
+var dbService *database.DataBaseSevice
+
 func main() {
+	dbService := database.Init()
+
 	http.HandleFunc("/", midleware(rootHandler))
 	http.HandleFunc("/registry", midleware(registryHandler))
 	http.HandleFunc("/login", midleware(loginHandler))
