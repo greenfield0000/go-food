@@ -3,47 +3,39 @@ package database
 import (
 	"context"
 	"fmt"
-	"github.com/jackc/pgx/v4"
 	"log"
 	"os"
+
+	"github.com/greenfield0000/go-food/back/model"
+	"github.com/jackc/pgx/v4"
 )
 
-var conn *pgx.Conn
-
 type DataBaseSevice struct {
-	dbUrl      string
-	dbName     string
-	dbUser     string
-	dbPassword string
+	DBConn *pgx.Conn
 }
 
 const (
-	dbUrl      = "jdbc:postgresql://0.0.0.0:5432/central-db"
 	dbName     = "central-db"
-	dbUser     = "admim"
-	dbPassword = "admim"
+	dbUser     = "admin"
+	dbPassword = "admin"
 )
 
 // Создание сервиса для работы с базой
 func Init() *DataBaseSevice {
 	log.Println("Start init db service")
 
-	dbService := &DataBaseSevice{
-		dbUrl,
-		dbName,
-		dbUser,
-		dbPassword,
-	}
+	dbService := &DataBaseSevice{}
 
-	conn, err := dbService.openConnect()
+	DBConn, err := dbService.openConnect()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
 	}
-	defer conn.Close(context.Background())
+
+	dbService.DBConn = DBConn
 
 	// проверим соединение
-	if err := conn.Ping(context.Background()); err != nil {
+	if err := DBConn.Ping(context.Background()); err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
 
@@ -54,5 +46,44 @@ func Init() *DataBaseSevice {
 
 // Открытие соединения к бд
 func (db *DataBaseSevice) openConnect() (*pgx.Conn, error) {
-	return pgx.Connect(context.Background(), dbUrl)
+	return pgx.Connect(context.Background(), fmt.Sprintf("postgres://%s:%s@localhost/%s", dbUser, dbPassword, dbName))
+}
+
+func (db *DataBaseSevice) SelectAll(tableName string) []model.DishModel {
+	if db.DBConn != nil {
+		rows, err := db.DBConn.Query(context.Background(), fmt.Sprintf("select * from \"%s\"", tableName))
+		if err != nil {
+			log.Fatalln("SelectAll with error " + err.Error())
+		}
+		defer rows.Close()
+
+		var dishs []model.DishModel
+
+		for rows.Next() {
+			var id int32
+			var name string
+			var sysName string
+
+			err := rows.Scan(&id, &name, &sysName)
+			if err != nil {
+				log.Fatalln("Row scan with error " + err.Error())
+			}
+			dish := model.DishModel{
+				ID: id,
+				Name: name,
+				Sysname: sysName,
+			}
+			dishs = append(dishs, dish)
+		}
+
+		return dishs
+	}
+
+	return []model.DishModel{}
+}
+
+func (db *DataBaseSevice) CloseConn() {
+	if db.DBConn != nil {
+		db.DBConn.Close(context.Background())
+	}
 }

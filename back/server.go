@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/greenfield0000/go-food/back/database"
 	"github.com/greenfield0000/go-food/back/model"
@@ -45,13 +46,33 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 var dbService *database.DataBaseSevice
 
 func main() {
-	database.Init()
+	dbService = database.Init()
+	if dbService == nil {
+		log.Print("Database service is nil")
+		os.Exit(1)
+	}
+	//defer databaseService.CloseConn()
 
 	http.HandleFunc("/", midleware(rootHandler))
 	http.HandleFunc("/registry", midleware(registryHandler))
 	http.HandleFunc("/login", midleware(loginHandler))
 	http.HandleFunc("/logout", midleware(logoutHandler))
+
+	// DISH CRUD
+	http.HandleFunc("/dish/all", midleware(dishAll))
+
 	log.Fatalln(http.ListenAndServe(":8080", nil))
+}
+
+func dishAll(w http.ResponseWriter, r *http.Request) {
+	dishes := dbService.SelectAll("Dish")
+
+	jsonDishes, err := json.Marshal(&dishes)
+	if err != nil {
+		log.Fatal("Dishes convert to json is error " + err.Error())
+	}
+
+	w.Write(jsonDishes)
 }
 
 func midleware(next http.HandlerFunc) http.HandlerFunc {
