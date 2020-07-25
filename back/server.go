@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	model "github.com/greenfield0000/go-food/back/model"
+	"github.com/greenfield0000/go-food/back/model"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -52,6 +52,5 @@ func midleware(next http.HandlerFunc) http.HandlerFunc {
 		log.Println("Run midleware start")
 		next.ServeHTTP(w, r)
 		log.Println("Run midleware finish")
-
 	})
 }
