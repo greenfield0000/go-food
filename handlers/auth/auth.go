@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/greenfield0000/go-food/back/model"
 	"github.com/greenfield0000/go-food/back/repository"
+	"github.com/greenfield0000/go-food/back/secure"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -25,19 +26,22 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println("Error unmarshal login model")
 		return
 	}
-
-	account, err := acr.FindAccount(accountModel)
+	account, err := acr.Find(accountModel)
 	if err != nil {
 		w.Write([]byte("Error" + err.Error()))
 		return
 	}
-
 	if account == nil {
 		w.Write([]byte("Account not found"))
 		return
 	}
+	tokenDetail, err := secure.CreateToken(uint64(account.ID))
 
-	marshal, err := json.Marshal(account)
+	tokenMap := map[string]string{
+		"access_token":  tokenDetail.AccessToken,
+		"refresh_token": tokenDetail.RefreshToken,
+	}
+	marshal, err := json.Marshal(tokenMap)
 	if err != nil {
 		w.Write([]byte(fmt.Sprintf("Error ", err.Error())))
 		return
@@ -60,7 +64,7 @@ func RegistryHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	account, err := acr.FindAccount(accountModel)
+	account, err := acr.Find(accountModel)
 	if err != nil {
 		w.Write([]byte("Error find account"))
 		return

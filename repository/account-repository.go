@@ -9,16 +9,12 @@ import (
 
 type AccountRepository struct{}
 
-// FindAccount - find account by login and password params
-func (ar *AccountRepository) FindAccount(accountModel model.AccountModel) (*model.AccountModel, error) {
+// Find - find account by login and password params
+func (ar *AccountRepository) Find(accountModel model.AccountModel) (*model.AccountModel, error) {
 	db, err := database.OpenDB()
 	if err != nil {
 		return nil, err
 	}
-	if err != nil {
-		return nil, err
-	}
-
 	var account model.AccountModel
 
 	if err := db.Where("login = ?", accountModel.Login).Find(&account).Error; err != nil {
@@ -28,7 +24,6 @@ func (ar *AccountRepository) FindAccount(accountModel model.AccountModel) (*mode
 	if account.Login == accountModel.Login && secure.ComparePassword(account.Password, accountModel.Password) {
 		return &account, nil
 	}
-
 	return nil, nil
 }
 

@@ -18,10 +18,12 @@ func init() {
 
 func main() {
 	// auth
-	http.HandleFunc("/", middleware(rootHandler))
-	http.HandleFunc("/registry", middleware(auth.RegistryHandler))
-	http.HandleFunc("/login", middleware(auth.LoginHandler))
-	http.HandleFunc("/logout", middleware(auth.LogoutHandler))
+	http.HandleFunc("/", rootHandler)
+	http.HandleFunc("/registry", auth.RegistryHandler)
+	http.HandleFunc("/login", auth.LoginHandler)
+	http.HandleFunc("/logout", auth.LogoutHandler)
+	//// with test func header
+	//http.HandleFunc("/auth", auth.LogoutHandler)
 
 	log.Fatalln(http.ListenAndServe(":8080", nil))
 }
