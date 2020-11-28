@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/greenfield0000/go-food/back/database"
 	"github.com/greenfield0000/go-food/back/model"
-	"github.com/greenfield0000/go-food/back/secure"
+	"github.com/greenfield0000/go-secure-microservice"
 )
 
 type AccountRepository struct{}
