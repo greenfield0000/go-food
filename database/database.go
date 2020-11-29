@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/greenfield0000/go-food/back/model"
+	"github.com/greenfield0000/go-food/microservices/go-food-auth/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"

@@ -3,8 +3,8 @@ package auth
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/greenfield0000/go-food/back/model"
-	"github.com/greenfield0000/go-food/back/repository"
+	"github.com/greenfield0000/go-food/microservices/go-food-auth/model"
+	"github.com/greenfield0000/go-food/microservices/go-food-auth/repository"
 	"github.com/greenfield0000/go-secure-microservice"
 	"io/ioutil"
 	"log"

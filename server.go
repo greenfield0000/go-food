@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/greenfield0000/go-food/back/database"
-	"github.com/greenfield0000/go-food/back/handlers/auth"
+	"github.com/greenfield0000/go-food/microservices/go-food-auth/database"
+	"github.com/greenfield0000/go-food/microservices/go-food-auth/handlers/auth"
 	"log"
 	"net/http"
 	"os"
