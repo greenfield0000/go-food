@@ -3,9 +3,9 @@ package main
 import (
 	"github.com/greenfield0000/go-food/back/database"
 	"github.com/greenfield0000/go-food/back/handlers/auth"
-	"github.com/greenfield0000/go-secure-microservice"
 	"log"
 	"net/http"
+	"os"
 )
 
 // started server function
@@ -24,27 +24,14 @@ func main() {
 	http.HandleFunc("/login", auth.LoginHandler)
 	http.HandleFunc("/logout", auth.LogoutHandler)
 
-	//// with test func header
-	http.HandleFunc("/authtest", middleware(auth.LogoutHandler))
-
-	log.Fatalln(http.ListenAndServe(":8080", nil))
+	log.Fatalln(http.ListenAndServe(getServicePort(), nil))
 }
 
-func middleware(next http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		log.Println("Run middleware start")
-		err := authMiddleWare(r)
-		if err != nil {
-			w.WriteHeader(http.StatusForbidden)
-			w.Write([]byte("Forbidden"))
-			return
-		}
-		next.ServeHTTP(w, r)
-		log.Println("Run middleware finish")
+// getServicePort get port with service listen
+func getServicePort() string {
+	servicePort := ":8080"
+	if port := os.Getenv("PORT"); port != "" {
+		servicePort = ":" + port
 	}
-}
-
-func authMiddleWare(r *http.Request) error {
-	_, err := secure.ExtractTokenMetadata(r)
-	return err
+	return servicePort
 }
