@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/greenfield0000/go-food/microservices/go-food-auth/database"
-	"github.com/greenfield0000/go-food/microservices/go-food-auth/handlers/auth"
+	"github.com/greenfield0000/go-food/microservices/go-food-auth/handlers"
 	"log"
 	"net/http"
 	"os"
@@ -20,9 +20,9 @@ func init() {
 func main() {
 	// auth
 	http.HandleFunc("/", rootHandler)
-	http.HandleFunc("/registry", auth.RegistryHandler)
-	http.HandleFunc("/login", auth.LoginHandler)
-	http.HandleFunc("/logout", auth.LogoutHandler)
+	http.HandleFunc("/registry", handlers.RegistryHandler)
+	http.HandleFunc("/login", handlers.LoginHandler)
+	http.HandleFunc("/logout", handlers.LogoutHandler)
 
 	log.Fatalln(http.ListenAndServe(getServicePort(), nil))
 }
