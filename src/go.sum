@@ -17,6 +17,10 @@ github.com/google/renameio v0.1.0/go.mod h1:KWCgfxg9yswjAJkECMjeO8J8rahYeXnNhOm4
 github.com/greenfield0000/go-food v0.1.0 h1:i0BIZwsf8BRoI5tUEnwV+p2FDlxiUX+xR/JgCB0XggY=
 github.com/greenfield0000/go-secure-microservice v0.0.0-20201128194156-6139a8986cee h1:XaQhmm9Jddrm5D5GDmadU8L7PN4YlYdibPHN9pqeK0Y=
 github.com/greenfield0000/go-secure-microservice v0.0.0-20201128194156-6139a8986cee/go.mod h1:H76xc2TW+L/+PtXJt5dG1Oi+u8KPHkCy8gCarJRXsZk=
+github.com/greenfield0000/go-secure-microservice v0.0.0-20201226194529-15f8f058fb5b h1:9KpHjmTJ2H2qkO9lq5Gi8csWfpXrn+LofhNJ+UDkq/4=
+github.com/greenfield0000/go-secure-microservice v0.0.0-20201226194529-15f8f058fb5b/go.mod h1:H76xc2TW+L/+PtXJt5dG1Oi+u8KPHkCy8gCarJRXsZk=
+github.com/greenfield0000/go-secure-microservice v0.0.0-20210117201621-553ebdbcc460 h1:HvUtJTpCoFe4kM9Qm0cmuO7l34cYEmhad94X40PL4FQ=
+github.com/greenfield0000/go-secure-microservice v0.0.0-20210117201621-553ebdbcc460/go.mod h1:H76xc2TW+L/+PtXJt5dG1Oi+u8KPHkCy8gCarJRXsZk=
 github.com/jackc/chunkreader v1.0.0 h1:4s39bBR8ByfqH+DKm8rQA3E1LHZWB9XWcrz8fqaZbe0=
 github.com/jackc/chunkreader v1.0.0/go.mod h1:RT6O25fNZIuasFJRyZ4R/Y2BbhasbmZXF9QQ7T3kePo=
 github.com/jackc/chunkreader/v2 v2.0.0/go.mod h1:odVSm741yZoC3dpHEUXIqA9tQRhFrgOHwnPIn9lDKlk=
