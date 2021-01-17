@@ -1,10 +1,11 @@
 package database
 
 import (
+	"log"
+
 	"github.com/greenfield0000/go-food/microservices/go-food-auth/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"log"
 )
 
 const (

@@ -2,6 +2,7 @@ package repository
 
 import (
 	"errors"
+
 	"github.com/greenfield0000/go-food/microservices/go-food-auth/database"
 	"github.com/greenfield0000/go-food/microservices/go-food-auth/model"
 	"github.com/greenfield0000/go-secure-microservice"
@@ -10,18 +11,18 @@ import (
 type AccountRepository struct{}
 
 // Find - find account by login and password params
-func (ar *AccountRepository) Find(accountModel model.AccountModel) (*model.AccountModel, error) {
+func (ar *AccountRepository) Find(loginModel model.LoginRequest) (*model.AccountModel, error) {
 	db, err := database.OpenDB()
 	if err != nil {
 		return nil, err
 	}
 	var account model.AccountModel
 
-	if err := db.Where("login = ?", accountModel.Login).Find(&account).Error; err != nil {
+	if err := db.Where("login = ?", loginModel.Login).Find(&account).Error; err != nil {
 		return nil, errors.New("Get account is error")
 	}
 
-	if account.Login == accountModel.Login && secure.ComparePassword(account.Password, accountModel.Password) {
+	if account.Login == loginModel.Login && secure.ComparePassword(account.Password, loginModel.Password) {
 		return &account, nil
 	}
 	return nil, nil

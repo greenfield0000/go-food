@@ -3,12 +3,13 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/greenfield0000/go-food/microservices/go-food-auth/model"
-	"github.com/greenfield0000/go-food/microservices/go-food-auth/repository"
-	"github.com/greenfield0000/go-secure-microservice"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/greenfield0000/go-food/microservices/go-food-auth/model"
+	"github.com/greenfield0000/go-food/microservices/go-food-auth/repository"
+	"github.com/greenfield0000/go-secure-microservice"
 )
 
 var acr repository.AccountRepository
@@ -20,13 +21,13 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var accountModel model.AccountModel
-	err = json.Unmarshal(body, &accountModel)
+	var loginRequest model.LoginRequest
+	err = json.Unmarshal(body, &loginRequest)
 	if err != nil {
 		log.Println("Error unmarshal login model")
 		return
 	}
-	account, err := acr.Find(accountModel)
+	account, err := acr.Find(loginRequest)
 	if err != nil {
 		w.Write([]byte("Error" + err.Error()))
 		return
@@ -37,16 +38,31 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	tokenDetail, err := secure.CreateToken(uint64(account.ID))
 
-	tokenMap := map[string]string{
-		"access_token":  tokenDetail.AccessToken,
-		"refresh_token": tokenDetail.RefreshToken,
+	baseResp := model.BaseResponse{
+		Status: http.StatusText(http.StatusOK),
+		Result: model.Account{},
 	}
-	marshal, err := json.Marshal(tokenMap)
+
+	resp, err := json.Marshal(baseResp)
 	if err != nil {
 		w.Write([]byte(fmt.Sprintf("Error ", err.Error())))
 		return
 	}
-	w.Write(marshal)
+
+	acTokenCook := &http.Cookie{
+		Name:     "token",
+		Value:    tokenDetail.AccessToken,
+		HttpOnly: true,
+	}
+	http.SetCookie(w, acTokenCook)
+	rfTokenCook := &http.Cookie{
+		Name:     "rtoken",
+		Value:    tokenDetail.RefreshToken,
+		HttpOnly: true,
+	}
+
+	http.SetCookie(w, rfTokenCook)
+	w.Write(resp)
 }
 
 func RegistryHandler(w http.ResponseWriter, r *http.Request) {
@@ -57,25 +73,30 @@ func RegistryHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var accountModel model.AccountModel
-	if err = json.Unmarshal(body, &accountModel); err != nil {
+	var loginRequest model.LoginRequest
+	if err = json.Unmarshal(body, &loginRequest); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("Error Unmarshal with error " + err.Error()))
 		return
 	}
 
-	account, err := acr.Find(accountModel)
+	account, err := acr.Find(loginRequest)
 	if err != nil {
 		w.Write([]byte("Error find account"))
 		return
 	}
 	// если такой акк зарегистрирован
 	if account != nil {
-		w.Write([]byte("Name '" + accountModel.Login + "' already exist "))
+		w.Write([]byte("Name '" + loginRequest.Login + "' already exist "))
 		return
 	}
 
-	err = acr.Create(&accountModel)
+	newAccount := model.AccountModel{
+		Login:    loginRequest.Login,
+		Password: loginRequest.Password,
+	}
+
+	err = acr.Create(&newAccount)
 	if err != nil {
 		w.Write([]byte("Not created"))
 		return
