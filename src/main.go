@@ -50,7 +50,7 @@ func isEnabledCors(w http.ResponseWriter, r *http.Request) bool {
 
 // getServicePort get port with service listen
 func getServicePort() string {
-	servicePort := ":8081"
+	servicePort := ":8080"
 	if port := os.Getenv("PORT"); port != "" {
 		servicePort = ":" + port
 	}

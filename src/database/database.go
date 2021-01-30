@@ -9,6 +9,7 @@ import (
 )
 
 const (
+	dbHost     = "central-db"
 	dbName     = "central-db"
 	dbUser     = "admin"
 	dbPassword = "admin"
@@ -19,7 +20,7 @@ const (
 
 // OpenDB - Открытие бд
 func OpenDB() (db *gorm.DB, err error) {
-	dsn := "host=127.0.0.1 user=" + dbUser + " password=" + dbPassword + " dbname=" + dbName + " port=" + dbPort + " sslmode=" + sslMode + " TimeZone=" + dbTimeZone
+	dsn := "host=" + dbHost + " user=" + dbUser + " password=" + dbPassword + " dbname=" + dbName + " port=" + dbPort + " sslmode=" + sslMode + " TimeZone=" + dbTimeZone
 	return gorm.Open(postgres.Open(dsn), &gorm.Config{})
 }
 
