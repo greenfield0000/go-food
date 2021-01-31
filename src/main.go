@@ -43,7 +43,7 @@ func isEnabledCors(w http.ResponseWriter, r *http.Request) bool {
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
 	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:4200")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
-	w.Header().Set("Access-Control-Allow-Headers", "access-control-allow-origin, origin, accept, content-type, access-control-allow-methods")
+	w.Header().Set("Access-Control-Allow-Headers", "access-control-allow-origin, origin, accept, content-type, access-control-allow-methods, authorization")
 
 	return r.Method == "OPTIONS"
 }

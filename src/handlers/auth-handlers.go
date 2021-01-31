@@ -53,15 +53,16 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		Name:     "token",
 		Value:    tokenDetail.AccessToken,
 		HttpOnly: false,
+		Path:     "/",
 	}
 	http.SetCookie(w, acTokenCook)
-	rfTokenCook := &http.Cookie{
-		Name:     "rtoken",
-		Value:    tokenDetail.RefreshToken,
-		HttpOnly: false,
-	}
+	// rfTokenCook := &http.Cookie{
+	// 	Name:     "rtoken",
+	// 	Value:    tokenDetail.RefreshToken,
+	// 	HttpOnly: false,
+	// }
 
-	http.SetCookie(w, rfTokenCook)
+	// http.SetCookie(w, rfTokenCook)
 	w.Write(resp)
 }
 
