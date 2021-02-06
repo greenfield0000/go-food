@@ -23,7 +23,10 @@ func main() {
 	http.HandleFunc("/", rootHandler)
 	http.HandleFunc("/auth/registry", middleWare(handlers.RegistryHandler))
 	http.HandleFunc("/auth/login", middleWare(handlers.LoginHandler))
-	http.HandleFunc("/auth//logout", middleWare(handlers.LogoutHandler))
+	http.HandleFunc("/auth/logout", middleWare(handlers.LogoutHandler))
+
+	// Создание пользователя
+	http.HandleFunc("/auth/createNewPerson", middleWare(handlers.CreatePerson))
 
 	log.Fatalln(http.ListenAndServe(getServicePort(), nil))
 }
