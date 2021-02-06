@@ -25,9 +25,6 @@ func main() {
 	http.HandleFunc("/auth/login", middleWare(handlers.LoginHandler))
 	http.HandleFunc("/auth/logout", middleWare(handlers.LogoutHandler))
 
-	// Создание пользователя
-	http.HandleFunc("/auth/createNewPerson", middleWare(handlers.CreatePerson))
-
 	log.Fatalln(http.ListenAndServe(getServicePort(), nil))
 }
 
